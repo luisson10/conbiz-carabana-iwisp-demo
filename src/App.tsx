@@ -7,6 +7,7 @@ import calendarIcon from 'pixelarticons/svg/calendar-2-sharp.svg'
 import userIcon from 'pixelarticons/svg/user.svg'
 import volumeIcon from 'pixelarticons/svg/volume-2.svg'
 import megaphoneIcon from 'pixelarticons/svg/megaphone.svg'
+import chevronDownIcon from 'pixelarticons/svg/chevron-down.svg'
 import './App.css'
 
 type DemoTrack = {
@@ -21,6 +22,8 @@ type DemoTrack = {
 
 const recordingBase =
   '/assets/recordings/019e3681-fab2-7000-ad91-f1b197497e2d-1779031062241-25cab87b-ec50-4bba-8033-1ef3e3861a1c-mono'
+
+const DEFAULT_EXPANDED = false
 
 const tracks: DemoTrack[] = [
   {
@@ -199,15 +202,18 @@ function AudioCard({
   track,
   activeId,
   setActiveId,
+  defaultExpanded = DEFAULT_EXPANDED,
 }: {
   track: DemoTrack
   activeId: string | null
   setActiveId: (id: string | null) => void
+  defaultExpanded?: boolean
 }) {
   const audioRef = useRef<HTMLAudioElement | null>(null)
   const [duration, setDuration] = useState(0)
   const [currentTime, setCurrentTime] = useState(0)
   const [isPlaying, setIsPlaying] = useState(false)
+  const [isExpanded, setIsExpanded] = useState(defaultExpanded)
   const progress = duration ? currentTime / duration : 0
   const peaks = useAudioPeaks(track.audioSrc)
 
@@ -233,6 +239,7 @@ function AudioCard({
       setCurrentTime(0)
     }
 
+    setIsExpanded(true)
     setActiveId(track.id)
     await audio.play()
     setIsPlaying(true)
@@ -246,49 +253,65 @@ function AudioCard({
   }
 
   return (
-    <article className="recording-card">
-      <section className="recording-info">
-        <div className="card-meta">
-          <span className="icon-box">
-            <img src={track.icon} alt="" />
-          </span>
-          <time>{track.date}</time>
-        </div>
+    <article className={`recording-card ${isExpanded ? 'is-expanded' : 'is-collapsed'}`}>
+      <button
+        className="recording-summary"
+        type="button"
+        aria-expanded={isExpanded}
+        aria-controls={`details-${track.id}`}
+        onClick={() => setIsExpanded((current) => !current)}
+      >
+        <span className="icon-box">
+          <img src={track.icon} alt="" />
+        </span>
+        <span className="summary-title">{track.title}</span>
+        <span className="expand-icon" aria-hidden="true">
+          <img src={chevronDownIcon} alt="" />
+        </span>
+      </button>
 
-        <h2>{track.title}</h2>
-        <p>{track.description}</p>
+      <div className="recording-details" id={`details-${track.id}`} aria-hidden={!isExpanded}>
+        <section className="recording-info">
+          <div className="card-meta">
+            <span className="icon-box" aria-hidden="true">
+              <img src={track.icon} alt="" />
+            </span>
+          </div>
 
-        <div className="tags" aria-label="Categorías">
-          {track.tags.map((tag) => (
-            <Tag key={tag} label={tag} />
-          ))}
-        </div>
-      </section>
+          <h2>{track.title}</h2>
+          <p>{track.description}</p>
 
-      <section className="player-row" aria-label={`Reproductor para ${track.title}`}>
-        <button className="play-button" type="button" onClick={togglePlayback} aria-label={isPlaying ? 'Detener audio' : 'Reproducir audio'}>
-          <span className={isPlaying ? 'stop-mark' : 'play-mark'} />
-        </button>
+          <div className="tags" aria-label="Categorías">
+            {track.tags.map((tag) => (
+              <Tag key={tag} label={tag} />
+            ))}
+          </div>
+        </section>
 
-        <div className="scrubber-wrap">
-          <Waveform peaks={peaks} progress={progress} />
-          <input
-            className="scrubber"
-            type="range"
-            min="0"
-            max={duration || 0}
-            step="0.01"
-            value={currentTime}
-            onChange={(event) => seek(event.target.value)}
-            aria-label="Mover posición del audio"
-          />
-        </div>
+        <section className="player-row" aria-label={`Reproductor para ${track.title}`}>
+          <button className="play-button" type="button" onClick={togglePlayback} aria-label={isPlaying ? 'Detener audio' : 'Reproducir audio'}>
+            <span className={isPlaying ? 'stop-mark' : 'play-mark'} />
+          </button>
 
-        <time className="time" dateTime={`PT${Math.floor(duration || currentTime)}S`}>
-          {formatTime(duration || currentTime)}
-        </time>
+          <div className="scrubber-wrap">
+            <Waveform peaks={peaks} progress={progress} />
+            <input
+              className="scrubber"
+              type="range"
+              min="0"
+              max={duration || 0}
+              step="0.01"
+              value={currentTime}
+              onChange={(event) => seek(event.target.value)}
+              aria-label="Mover posición del audio"
+            />
+          </div>
 
-      </section>
+          <time className="time" dateTime={`PT${Math.floor(duration || currentTime)}S`}>
+            {formatTime(duration || currentTime)}
+          </time>
+        </section>
+      </div>
 
       <audio
         ref={audioRef}
