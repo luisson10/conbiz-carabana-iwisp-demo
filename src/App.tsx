@@ -386,12 +386,6 @@ function App() {
         </header>
 
 
-        <section className="hero-copy">
-          <p className="kicker">Conbiz Voice Agent</p>
-          <h1>Grabaciones</h1>
-          <p>{tracks.length} grabaciones guardadas</p>
-        </section>
-
         <section className="cards" aria-label="Grabaciones de ejemplo">
           {tracks.map((track) => (
             <AudioCard key={track.id} track={track} activeId={activeId} setActiveId={setActiveId} />
