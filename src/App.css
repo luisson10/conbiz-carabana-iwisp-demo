@@ -48,9 +48,58 @@ input {
   background: white;
 }
 
+.phone-frame.is-modal-open {
+  filter: blur(5px);
+  pointer-events: none;
+  user-select: none;
+}
+
 .app-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
   flex-shrink: 0;
-  padding: max(22px, env(safe-area-inset-top)) 20px 14px;
+  padding: max(12px, env(safe-area-inset-top)) 20px 12px;
+  background: rgba(255, 255, 255, 0.72);
+  border-bottom: 1px solid rgba(228, 228, 228, 0.72);
+  backdrop-filter: blur(18px) saturate(1.25);
+  -webkit-backdrop-filter: blur(18px) saturate(1.25);
+}
+
+.brand-link {
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.brand-link img {
+  width: 122px;
+  height: auto;
+  display: block;
+}
+
+.demo-cta {
+  min-height: 36px;
+  padding: 0 14px;
+  color: white;
+  background: var(--demo-coral);
+  border: 1px solid color-mix(in oklab, var(--demo-coral) 86%, black);
+  border-radius: 999px;
+  box-shadow: 0 8px 18px rgba(255, 126, 111, 0.22);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: -0.015em;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.hero-copy {
+  flex-shrink: 0;
+  padding: 20px 20px 14px;
 }
 
 .kicker {
@@ -62,7 +111,7 @@ input {
   text-transform: uppercase;
 }
 
-.app-header h1 {
+.hero-copy h1 {
   margin: 0;
   color: var(--demo-text);
   font-size: 24px;
@@ -71,7 +120,7 @@ input {
   letter-spacing: -0.04em;
 }
 
-.app-header p:last-child {
+.hero-copy p:last-child {
   margin: 4px 0 0;
   color: #9a9a9a;
   font-size: 12px;
@@ -206,17 +255,14 @@ input {
   height: 25px;
   opacity: 0.74;
   filter: brightness(0) saturate(100%) invert(39%) sepia(0%) saturate(16%) hue-rotate(219deg) brightness(96%) contrast(84%);
+  transition: opacity 180ms ease, filter 180ms ease;
 }
 
-
-.recording-info h2 {
-  margin: 0;
-  color: black;
-  font-size: 12px;
-  font-weight: 800;
-  line-height: 14.1px;
-  letter-spacing: -0.025em;
+.recording-card.is-expanded .recording-summary .icon-box img {
+  opacity: 1;
+  filter: brightness(0) saturate(100%) invert(65%) sepia(95%) saturate(1920%) hue-rotate(319deg) brightness(105%) contrast(101%);
 }
+
 
 .recording-info p {
   margin: 0;
@@ -225,6 +271,16 @@ input {
   font-weight: 500;
   line-height: 14.1px;
   letter-spacing: -0.018em;
+}
+
+.recording-info .feature-heading {
+  margin-top: 10px;
+  color: #8f8f8f;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  line-height: 1;
+  text-transform: uppercase;
 }
 
 .tags {
@@ -239,9 +295,9 @@ input {
   align-items: center;
   justify-content: center;
   padding: 5px 10px;
-  color: var(--demo-coral);
-  background: var(--demo-coral-soft);
-  border: 1px solid var(--demo-coral-border);
+  color: #6f6f6f;
+  background: #f7f7f7;
+  border: 1px solid #e4e4e4;
   border-radius: 5px;
   font-size: 10px;
   font-weight: 700;
@@ -386,4 +442,73 @@ input {
   .waveform span {
     transition: none;
   }
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 22px;
+  background: rgba(255, 255, 255, 0.34);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.demo-modal {
+  position: relative;
+  width: min(340px, 100%);
+  padding: 24px 20px 22px;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid rgba(208, 208, 208, 0.86);
+  border-radius: 22px;
+  box-shadow: 0 28px 90px rgba(0, 0, 0, 0.2);
+}
+
+.modal-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  background: #fafafa;
+  border: 1px solid #e1e1e1;
+  border-radius: 9px;
+  cursor: pointer;
+}
+
+.modal-close img {
+  width: 16px;
+  height: 16px;
+  opacity: 0.68;
+}
+
+.qr-code {
+  display: block;
+  width: min(220px, 82%);
+  height: auto;
+  margin: 20px auto 18px;
+  border-radius: 18px;
+}
+
+.demo-modal h2 {
+  margin: 0;
+  color: var(--demo-text);
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+
+.demo-modal p {
+  margin: 10px auto 0;
+  max-width: 260px;
+  color: var(--demo-muted);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.28;
 }

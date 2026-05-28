@@ -1,13 +1,19 @@
 import { useEffect, useRef, useState } from 'react'
-import receiptIcon from 'pixelarticons/svg/receipt.svg'
+import phoneCallIcon from 'pixelarticons/svg/phone-call.svg'
 import mapPinIcon from 'pixelarticons/svg/map-pin-home.svg'
+import toolCaseIcon from 'pixelarticons/svg/tool-case.svg'
 import modemIcon from 'pixelarticons/svg/modem.svg'
+import userPlusIcon from 'pixelarticons/svg/user-plus.svg'
 import warningIcon from 'pixelarticons/svg/warning-diamond.svg'
-import calendarIcon from 'pixelarticons/svg/calendar-2-sharp.svg'
-import userIcon from 'pixelarticons/svg/user.svg'
-import volumeIcon from 'pixelarticons/svg/volume-2.svg'
-import megaphoneIcon from 'pixelarticons/svg/megaphone.svg'
+import phoneOutgoingIcon from 'pixelarticons/svg/phone-outgoing.svg'
+import cardTextIcon from 'pixelarticons/svg/card-text.svg'
+import receiptIcon from 'pixelarticons/svg/receipt.svg'
+import shoppingBagIcon from 'pixelarticons/svg/shopping-bag.svg'
+import smartphoneIcon from 'pixelarticons/svg/smartphone.svg'
+import shieldIcon from 'pixelarticons/svg/shield.svg'
+import creditCardIcon from 'pixelarticons/svg/credit-card.svg'
 import chevronDownIcon from 'pixelarticons/svg/chevron-down.svg'
+import closeIcon from 'pixelarticons/svg/cancel.svg'
 import './App.css'
 
 type DemoTrack = {
@@ -15,88 +21,121 @@ type DemoTrack = {
   title: string
   description: string
   tags: string[]
-  date: string
   audioSrc: string
   icon: string
 }
 
+const DEFAULT_EXPANDED = false
+
 const recordingBase =
   '/assets/recordings/019e3681-fab2-7000-ad91-f1b197497e2d-1779031062241-25cab87b-ec50-4bba-8033-1ef3e3861a1c-mono'
 
-const DEFAULT_EXPANDED = false
+const audioFor = (part: number) => `${recordingBase}-part${part.toString().padStart(2, '0')}.wav`
 
 const tracks: DemoTrack[] = [
   {
-    id: 'payments',
-    title: 'Información de próximos pagos',
-    description: 'El agente informa montos, fechas límite y opciones de pago sin transferir al cliente.',
-    tags: ['pagos', 'autoservicio'],
-    date: 'Hoy, 10:24 AM',
-    audioSrc: `${recordingBase}-part01.wav`,
-    icon: receiptIcon,
+    id: 'automatic-identification',
+    title: 'Identificación Automática',
+    description: 'Reconoce al cliente por su número telefónico y carga su cuenta antes de iniciar la atención.',
+    tags: ['Telefonía SIP', 'iWisp', 'Reconocimiento inteligente', 'Datos de cuenta'],
+    audioSrc: audioFor(1),
+    icon: phoneCallIcon,
   },
   {
-    id: 'address',
-    title: 'Localización de dirección',
-    description: 'Guía al usuario para confirmar cobertura, domicilio y referencias de instalación.',
-    tags: ['cobertura', 'instalación'],
-    date: 'Hoy, 9:08 AM',
-    audioSrc: `${recordingBase}-part02.wav`,
+    id: 'real-time-coverage',
+    title: 'Cobertura en Tiempo Real',
+    description: 'Valida disponibilidad del servicio usando la dirección del cliente y zonas activas de cobertura.',
+    tags: ['Geolocalización', 'Cobertura', 'iWisp', 'Direcciones'],
+    audioSrc: audioFor(2),
     icon: mapPinIcon,
   },
   {
-    id: 'packages',
-    title: 'Paquetes de internet',
-    description: 'Presenta planes disponibles, velocidad, beneficios y siguiente paso comercial.',
-    tags: ['ventas', 'planes'],
-    date: 'Ayer, 4:55 PM',
-    audioSrc: `${recordingBase}-part03.wav`,
+    id: 'guided-technical-diagnosis',
+    title: 'Diagnóstico Técnico Guiado',
+    description: 'Guía al cliente paso a paso para resolver fallas comunes de internet y conexión.',
+    tags: ['Soporte técnico', 'Troubleshooting', 'Internet', 'Flujo guiado'],
+    audioSrc: audioFor(3),
+    icon: toolCaseIcon,
+  },
+  {
+    id: 'remote-router-restart',
+    title: 'Reinicio Remoto de Routers',
+    description: 'Reinicia el router del cliente de forma remota sin intervención manual del usuario.',
+    tags: ['MikroTik', 'Router', 'Soporte remoto', 'Automatización'],
+    audioSrc: audioFor(4),
     icon: modemIcon,
   },
   {
-    id: 'outage',
-    title: 'Notificación de incidencias masivas',
-    description: 'Cuando hay alguna falla, el agente puede explicar la caída de servicio por zona.',
-    tags: ['incidencia', 'soporte'],
-    date: 'Ayer, 2:12 PM',
-    audioSrc: `${recordingBase}-part04.wav`,
+    id: 'prospect-registration',
+    title: 'Registro de Prospectos',
+    description: 'Crea prospectos automáticamente cuando un cliente desea contratar un servicio.',
+    tags: ['iWisp', 'Ventas', 'Prospectos', 'Instalación'],
+    audioSrc: audioFor(5),
+    icon: userPlusIcon,
+  },
+  {
+    id: 'zone-outages',
+    title: 'Afectaciones de Zona',
+    description: 'Detecta eventos masivos en la zona del cliente y evita diagnósticos innecesarios.',
+    tags: ['Monitoreo', 'Zonas', 'Eventos masivos', 'Soporte'],
+    audioSrc: audioFor(6),
     icon: warningIcon,
   },
   {
-    id: 'appointment',
-    title: 'Agenda de visita técnica',
-    description: 'Ayuda a coordinar disponibilidad, ventanas de atención y confirmación de cita.',
-    tags: ['agenda', 'técnico'],
-    date: '22 may, 11:40 AM',
-    audioSrc: `${recordingBase}-part05.wav`,
-    icon: calendarIcon,
+    id: 'smart-transfers',
+    title: 'Transferencias Inteligentes',
+    description: 'Transfiere la llamada a un asesor con contexto y resumen previo de la conversación.',
+    tags: ['Warm transfer', 'SIP', 'Resumen', 'Asesor humano'],
+    audioSrc: audioFor(7),
+    icon: phoneOutgoingIcon,
   },
   {
-    id: 'identity',
-    title: 'Validación de titular',
-    description: 'Confirma datos mínimos del cliente antes de revelar información sensible de cuenta.',
-    tags: ['seguridad', 'CRM'],
-    date: '22 may, 10:15 AM',
-    audioSrc: `${recordingBase}-part06.wav`,
-    icon: userIcon,
+    id: 'lost-opportunity-tickets',
+    title: 'Tickets de Oportunidad Perdida',
+    description: 'Registra solicitudes donde aún no hay cobertura para identificar demanda por zona.',
+    tags: ['Cobertura', 'Prospectos', 'Históricos', 'Expansión'],
+    audioSrc: audioFor(8),
+    icon: cardTextIcon,
   },
   {
-    id: 'service-status',
-    title: 'Estado actual del servicio',
-    description: 'Consulta y comunica si el servicio se encuentra activo, suspendido o en revisión.',
-    tags: ['servicio', 'cuenta'],
-    date: '21 may, 5:30 PM',
-    audioSrc: `${recordingBase}-part07.wav`,
-    icon: volumeIcon,
+    id: 'follow-up-tickets',
+    title: 'Tickets de Seguimiento',
+    description: 'Genera tickets para casos que requieren atención o intervención del equipo interno.',
+    tags: ['iWisp', 'Tickets', 'Soporte', 'Seguimiento'],
+    audioSrc: audioFor(1),
+    icon: receiptIcon,
   },
   {
-    id: 'escalation',
-    title: 'Escalamiento a soporte',
-    description: 'Detecta cuándo hace falta intervención humana y prepara el contexto para soporte.',
-    tags: ['soporte', 'transferencia'],
-    date: '21 may, 3:05 PM',
-    audioSrc: `${recordingBase}-part08.wav`,
-    icon: megaphoneIcon,
+    id: 'zone-packages',
+    title: 'Paquetes por Zona',
+    description: 'Recomienda paquetes disponibles según cobertura, zona y necesidades del cliente.',
+    tags: ['Paquetes', 'Precios', 'Cobertura', 'Recomendación IA'],
+    audioSrc: audioFor(2),
+    icon: shoppingBagIcon,
+  },
+  {
+    id: 'whatsapp-integration',
+    title: 'Integración con WhatsApp',
+    description: 'Envía mensajes de seguimiento por WhatsApp durante el proceso de contratación.',
+    tags: ['WhatsApp', 'Gupshup', 'Seguimiento', 'Contratación'],
+    audioSrc: audioFor(3),
+    icon: smartphoneIcon,
+  },
+  {
+    id: 'operational-guardrails',
+    title: 'Guardrails Operativos',
+    description: 'Mantiene la conversación dentro del negocio y bloquea intentos de manipulación.',
+    tags: ['Seguridad', 'Anti-manipulación', 'Guardrails', 'IA responsable'],
+    audioSrc: audioFor(4),
+    icon: shieldIcon,
+  },
+  {
+    id: 'payments-self-service',
+    title: 'Pagos y Autoservicio',
+    description: 'Consulta adeudos y facilita referencias o enlaces de pago por canales digitales.',
+    tags: ['Pagos', 'WhatsApp', 'Autoservicio', 'Cuenta cliente'],
+    audioSrc: audioFor(5),
+    icon: creditCardIcon,
   },
 ]
 
@@ -278,10 +317,10 @@ function AudioCard({
             </span>
           </div>
 
-          <h2>{track.title}</h2>
           <p>{track.description}</p>
+          <p className="feature-heading">Funciones clave</p>
 
-          <div className="tags" aria-label="Categorías">
+          <div className="tags" aria-label="Funciones clave">
             {track.tags.map((tag) => (
               <Tag key={tag} label={tag} />
             ))}
@@ -331,17 +370,27 @@ function AudioCard({
 
 function App() {
   const [activeId, setActiveId] = useState<string | null>(null)
+  const [isDemoModalOpen, setIsDemoModalOpen] = useState(false)
 
   return (
     <main className="app-shell">
-      <section className="phone-frame" aria-label="Grabaciones Conbiz">
+      <section className={`phone-frame ${isDemoModalOpen ? 'is-modal-open' : ''}`} aria-label="Grabaciones Conbiz">
         <header className="app-header">
-          <div>
-            <p className="kicker">Conbiz Voice Agent</p>
-            <h1>Grabaciones</h1>
-            <p>{tracks.length} grabaciones guardadas</p>
-          </div>
+          <a className="brand-link" href="/" aria-label="Conbiz by Assetel">
+            <img src="/conbiz-by-assetel.png" alt="Conbiz by Assetel" />
+          </a>
+
+          <button className="demo-cta" type="button" onClick={() => setIsDemoModalOpen(true)}>
+            Agendar Demo
+          </button>
         </header>
+
+
+        <section className="hero-copy">
+          <p className="kicker">Conbiz Voice Agent</p>
+          <h1>Grabaciones</h1>
+          <p>{tracks.length} grabaciones guardadas</p>
+        </section>
 
         <section className="cards" aria-label="Grabaciones de ejemplo">
           {tracks.map((track) => (
@@ -349,6 +398,26 @@ function App() {
           ))}
         </section>
       </section>
+
+      {isDemoModalOpen && (
+        <div className="modal-backdrop" role="presentation" onClick={() => setIsDemoModalOpen(false)}>
+          <section
+            className="demo-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="demo-modal-title"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <button className="modal-close" type="button" onClick={() => setIsDemoModalOpen(false)} aria-label="Cerrar modal">
+              <img src={closeIcon} alt="" />
+            </button>
+
+            <img className="qr-code" src="/whatsapp-lajc.png" alt="QR de WhatsApp para agendar un demo" />
+            <h2 id="demo-modal-title">Agenda tu demo</h2>
+            <p>Mándanos un mensaje para agendar tu demo y transforma tu negocio con IA</p>
+          </section>
+        </div>
+      )}
     </main>
   )
 }
