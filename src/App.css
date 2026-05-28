@@ -92,12 +92,12 @@ input {
   min-height: 36px;
   padding: 0 14px;
   color: white;
-  background: var(--demo-coral);
-  border: 1px solid color-mix(in oklab, var(--demo-coral) 86%, black);
-  border-radius: 999px;
-  box-shadow: 0 8px 18px rgba(255, 126, 111, 0.22);
+  background: #ff7e6f;
+  border: 1px solid #ff7e6f;
+  border-radius: 10px;
+  box-shadow: none;
   font-size: 12px;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: -0.015em;
   white-space: nowrap;
   cursor: pointer;
