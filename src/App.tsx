@@ -7,7 +7,6 @@ import userPlusIcon from 'pixelarticons/svg/user-plus.svg'
 import warningIcon from 'pixelarticons/svg/warning-diamond.svg'
 import phoneOutgoingIcon from 'pixelarticons/svg/phone-outgoing.svg'
 import cardTextIcon from 'pixelarticons/svg/card-text.svg'
-import receiptIcon from 'pixelarticons/svg/receipt.svg'
 import shoppingBagIcon from 'pixelarticons/svg/shopping-bag.svg'
 import smartphoneIcon from 'pixelarticons/svg/smartphone.svg'
 import shieldIcon from 'pixelarticons/svg/shield.svg'
@@ -27,10 +26,7 @@ type DemoTrack = {
 
 const DEFAULT_EXPANDED = false
 
-const recordingBase =
-  '/assets/recordings/019e3681-fab2-7000-ad91-f1b197497e2d-1779031062241-25cab87b-ec50-4bba-8033-1ef3e3861a1c-mono'
-
-const audioFor = (part: number) => `${recordingBase}-part${part.toString().padStart(2, '0')}.wav`
+const recordingPath = (fileName: string) => `/grabaciones/${fileName}`
 
 const tracks: DemoTrack[] = [
   {
@@ -38,7 +34,7 @@ const tracks: DemoTrack[] = [
     title: 'Identificación Automática',
     description: 'Reconoce al cliente por su número telefónico y carga su cuenta antes de iniciar la atención.',
     tags: ['Telefonía SIP', 'iWisp', 'Reconocimiento inteligente', 'Datos de cuenta'],
-    audioSrc: audioFor(1),
+    audioSrc: recordingPath('Identificacion_automatica.mp3'),
     icon: phoneCallIcon,
   },
   {
@@ -46,7 +42,7 @@ const tracks: DemoTrack[] = [
     title: 'Cobertura en Tiempo Real',
     description: 'Valida disponibilidad del servicio usando la dirección del cliente y zonas activas de cobertura.',
     tags: ['Geolocalización', 'Cobertura', 'iWisp', 'Direcciones'],
-    audioSrc: audioFor(2),
+    audioSrc: recordingPath('direccion-edited.mp3'),
     icon: mapPinIcon,
   },
   {
@@ -54,7 +50,7 @@ const tracks: DemoTrack[] = [
     title: 'Diagnóstico Técnico Guiado',
     description: 'Guía al cliente paso a paso para resolver fallas comunes de internet y conexión.',
     tags: ['Soporte técnico', 'Troubleshooting', 'Internet', 'Flujo guiado'],
-    audioSrc: audioFor(3),
+    audioSrc: recordingPath('soporte-edited.mp3'),
     icon: toolCaseIcon,
   },
   {
@@ -62,7 +58,7 @@ const tracks: DemoTrack[] = [
     title: 'Reinicio Remoto de Routers',
     description: 'Reinicia el router del cliente de forma remota sin intervención manual del usuario.',
     tags: ['MikroTik', 'Router', 'Soporte remoto', 'Automatización'],
-    audioSrc: audioFor(4),
+    audioSrc: recordingPath('modem-remoto-edited (1).mp3'),
     icon: modemIcon,
   },
   {
@@ -70,7 +66,7 @@ const tracks: DemoTrack[] = [
     title: 'Registro de Prospectos',
     description: 'Crea prospectos automáticamente cuando un cliente desea contratar un servicio.',
     tags: ['iWisp', 'Ventas', 'Prospectos', 'Instalación'],
-    audioSrc: audioFor(5),
+    audioSrc: recordingPath('registro-prospecto-edited (1).mp3'),
     icon: userPlusIcon,
   },
   {
@@ -78,7 +74,7 @@ const tracks: DemoTrack[] = [
     title: 'Afectaciones de Zona',
     description: 'Detecta eventos masivos en la zona del cliente y evita diagnósticos innecesarios.',
     tags: ['Monitoreo', 'Zonas', 'Eventos masivos', 'Soporte'],
-    audioSrc: audioFor(6),
+    audioSrc: recordingPath('afectacion-zona-edited.mp3'),
     icon: warningIcon,
   },
   {
@@ -86,7 +82,7 @@ const tracks: DemoTrack[] = [
     title: 'Transferencias Inteligentes',
     description: 'Transfiere la llamada a un asesor con contexto y resumen previo de la conversación.',
     tags: ['Warm transfer', 'SIP', 'Resumen', 'Asesor humano'],
-    audioSrc: audioFor(7),
+    audioSrc: recordingPath('transferencia-edited.mp3'),
     icon: phoneOutgoingIcon,
   },
   {
@@ -94,23 +90,15 @@ const tracks: DemoTrack[] = [
     title: 'Tickets de Oportunidad Perdida',
     description: 'Registra solicitudes donde aún no hay cobertura para identificar demanda por zona.',
     tags: ['Cobertura', 'Prospectos', 'Históricos', 'Expansión'],
-    audioSrc: audioFor(8),
+    audioSrc: recordingPath('registro-perdida-edited.mp3'),
     icon: cardTextIcon,
-  },
-  {
-    id: 'follow-up-tickets',
-    title: 'Tickets de Seguimiento',
-    description: 'Genera tickets para casos que requieren atención o intervención del equipo interno.',
-    tags: ['iWisp', 'Tickets', 'Soporte', 'Seguimiento'],
-    audioSrc: audioFor(1),
-    icon: receiptIcon,
   },
   {
     id: 'zone-packages',
     title: 'Paquetes por Zona',
     description: 'Recomienda paquetes disponibles según cobertura, zona y necesidades del cliente.',
     tags: ['Paquetes', 'Precios', 'Cobertura', 'Recomendación IA'],
-    audioSrc: audioFor(2),
+    audioSrc: recordingPath('paquetes-zona.mp3'),
     icon: shoppingBagIcon,
   },
   {
@@ -118,7 +106,7 @@ const tracks: DemoTrack[] = [
     title: 'Integración con WhatsApp',
     description: 'Envía mensajes de seguimiento por WhatsApp durante el proceso de contratación.',
     tags: ['WhatsApp', 'Gupshup', 'Seguimiento', 'Contratación'],
-    audioSrc: audioFor(3),
+    audioSrc: recordingPath('whatsapp-edited (1).mp3'),
     icon: smartphoneIcon,
   },
   {
@@ -126,7 +114,7 @@ const tracks: DemoTrack[] = [
     title: 'Guardrails Operativos',
     description: 'Mantiene la conversación dentro del negocio y bloquea intentos de manipulación.',
     tags: ['Seguridad', 'Anti-manipulación', 'Guardrails', 'IA responsable'],
-    audioSrc: audioFor(4),
+    audioSrc: recordingPath('guardrails-edited.mp3'),
     icon: shieldIcon,
   },
   {
@@ -134,7 +122,7 @@ const tracks: DemoTrack[] = [
     title: 'Pagos y Autoservicio',
     description: 'Consulta adeudos y facilita referencias o enlaces de pago por canales digitales.',
     tags: ['Pagos', 'WhatsApp', 'Autoservicio', 'Cuenta cliente'],
-    audioSrc: audioFor(5),
+    audioSrc: recordingPath('pagos-service-edited.mp3'),
     icon: creditCardIcon,
   },
 ]
